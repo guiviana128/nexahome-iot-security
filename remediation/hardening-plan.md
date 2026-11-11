@@ -1,17 +1,15 @@
-# Plano de hardening para versão comercial
+# Hardening proposto para uma versão comercial
 
-**Estado:** proposta preliminar. Priorizar e ajustar após achados confirmados.
+O plano responde aos achados F01–F03 observados no simulador. A implementação e a eficácia em hardware real não foram testadas.
 
-| Área | Medida proposta | Condição para aplicar | Verificação sugerida |
+| Prioridade | Achado | Medida | Verificação para produto |
 |---|---|---|---|
-| Identidade | Credencial individual por unidade; sem senha universal | Se houver autenticação do dispositivo | Duas unidades não compartilham segredo |
-| Firmware | Assinatura e verificação de atualização; proteção contra rollback | Se houver atualização | Imagem alterada ou antiga é rejeitada |
-| Inicialização | Secure Boot e proteção da cadeia de confiança | Se suportado pelo hardware e modelo de ameaça | Boot de imagem não autorizada falha |
-| Armazenamento | Proteger segredos em hardware/armazenamento; criptografia quando necessária | Se houver dados sensíveis persistentes | Extração offline não revela segredo em claro |
-| Debug | Remover logs sensíveis; limitar ou desativar acesso de produção | Se saída/comandos sensíveis forem observados | Build de produção não expõe dados nem comando |
-| Comunicação | Autenticação mútua ou equivalente e canal protegido | Se fluxo carregar comandos ou dados sensíveis | Tráfego capturado não revela conteúdo; comandos sem autorização falham |
-| Serviços | Desabilitar portas e funções desnecessárias | Após mapa real da superfície | Varredura autorizada mostra apenas serviços previstos |
-| Atualização | Processo seguro com recuperação após falha | Se houver OTA/local update | Falha de energia não inutiliza a unidade |
-| Ciclo de vida | Inventário, política de suporte, correção e divulgação de falhas | Versão comercial | Procedimento e prazo documentados |
+| 1 | F01 | Não embutir credencial compartilhada na imagem; provisionar identidade única por dispositivo e usar armazenamento protegido | Extrair duas imagens de produção autorizadas e confirmar que não revelam o mesmo segredo |
+| 1 | F02 | Desativar logs de debug em produção e remover segredos de mensagens de boot | Coletar boot de build de produção e procurar credenciais e identificadores sensíveis |
+| 1 | F03 | Proteger comunicação com TLS adequado, autenticar o serviço e o dispositivo, limitar permissões do token | Testar rejeição de par não autorizado e verificar que captura de rede não revela payload |
+| 2 | Superfície física futura | Bloquear ou controlar UART/JTAG/SWD de produção conforme necessidade de assistência | Inspeção e tentativa autorizada de leitura/comando em unidade comercial |
+| 2 | Atualização futura | Assinar firmware, validar integridade/autoria, impedir rollback e prever recuperação de falha | Imagem modificada/antiga é rejeitada; interrupção de update não inutiliza a unidade |
+| 2 | Inicialização futura | Secure Boot e proteção de chaves quando suportados | Boot não autorizado é rejeitado |
+| 3 | Operação | Inventário, prazo de suporte, correções, divulgação de vulnerabilidades e redução de serviços | Processo documentado e teste periódico |
 
-A prioridade final deve seguir a matriz em `findings/findings.md`; esta lista não substitui evidência de risco.
+Não é necessário programar fusíveis ou mudanças irreversíveis no laboratório. Medidas dependem do hardware, custos e modelo de ameaça da versão comercial.
