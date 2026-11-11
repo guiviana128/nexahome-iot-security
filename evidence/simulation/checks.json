@@ -1,0 +1,9 @@
+{
+  "firmware_hash_match": true,
+  "image_structure_valid": true,
+  "token_in_firmware": true,
+  "token_in_uart": true,
+  "plaintext_network_payload": true,
+  "loopback_only": true
+}
+
