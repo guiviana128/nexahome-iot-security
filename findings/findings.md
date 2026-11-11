@@ -1,29 +1,19 @@
-# Achados e classificação de riscos
+# Achados validados no simulador
 
-Nenhum achado foi validado. Crie um registro apenas depois de obter evidência técnica e reproduzir a condição no laboratório.
+**Escopo da classificação:** laboratório local e token fictício sem privilégio real. Impactos comerciais abaixo são cenários condicionais, não fatos observados.
 
 ## Critério
-- **Impacto:** baixo (efeito limitado), médio (perda relevante de confidencialidade/integridade/disponibilidade), alto (controle do dispositivo, exposição ampla ou efeito físico relevante).
-- **Probabilidade:** baixa (acesso difícil ou condições raras), média (condições plausíveis), alta (acesso fácil e condição reproduzível).
-- **Risco:** matriz qualitativa abaixo. Registre as premissas que justificam cada nível.
+Impacto baixo = efeito limitado ao ambiente demonstrado; médio = perda relevante de dados/função; alto = controle amplo ou efeito físico. Probabilidade baixa/média/alta estima a facilidade de reproduzir a condição no escopo definido. Matriz: baixo+alta = **médio**; médio+alta = **alto**; alto+alta = **alto**.
 
-| Impacto \\ Probabilidade | Baixa | Média | Alta |
-|---|---|---|---|
-| Baixo | Baixo | Baixo | Médio |
-| Médio | Baixo | Médio | Alto |
-| Alto | Médio | Alto | Alto |
+| ID | Evidência | Fragilidade | Ameaça/cenário | Impacto | Prob. | Risco | Referência | Mitigação |
+|---|---|---|---|---|---|---|---|---|
+| F01 | `firmware-analysis.txt`, `hashes.txt`; campo `token` | Token fictício em texto claro na imagem | Leitura por quem obtiver o arquivo | Baixo | Alta | Médio | NIST IR 8259A, Data Protection | Não embutir segredo compartilhado; armazenar credencial individual protegida |
+| F02 | `uart-observation.txt`, linha 3 | Log de boot imprime token fictício | Leitura do log por operador local | Baixo | Alta | Médio | NIST IR 8259A, Logical Access to Interfaces / Data Protection | Remover parâmetros sensíveis do log de produção |
+| F03 | `network-observation.txt`, `checks.json` | JSON com token e telemetria via TCP sem TLS | Leitura do conteúdo no caminho de comunicação, caso exposto | Baixo | Alta | Médio | ETSI EN 303 645 §5.5, comunicação de parâmetros críticos | Proteger canal, autenticar pares e evitar enviar segredo em cada telemetria |
 
-| ID | Evidência e localização | Fragilidade demonstrada | Ameaça/cenário | Impacto | Probabilidade | Risco | Referência | Mitigação | Estado |
-|---|---|---|---|---|---|---|---|---|---|
-| F01 | Pendente | Pendente | Pendente | — | — | — | — | — | Não validado |
+## Cadeia causal e limites
+- **F01:** imagem preservada → manifesto contém token → acesso ao arquivo permitiria leitura → no laboratório o token não concede acesso → impacto baixo → risco médio pela facilidade de reprodução. Em produto real, o impacto depende de o segredo ser aceito por um serviço.
+- **F02:** log UART simulado mostra o mesmo token → pessoa com acesso ao log poderia copiá-lo → impacto atual baixo. Não houve inspeção de pinos físicos.
+- **F03:** coletor recebeu os bytes do payload sem TLS → o conteúdo é legível no destino e em pontos de observação do fluxo → comunicação restrita a loopback; nenhum interceptador de rede externa foi testado.
 
-## Modelo de registro detalhado
-### Fxx — Título factual
-- **Condição e escopo:** unidade, versão, local, data e autorização.
-- **Evidência:** arquivo, hash ou trecho redigido, offset/pacote/linha e comando.
-- **Reprodução:** pré-condições, passos, resultado esperado e observado.
-- **Fragilidade:** o que a evidência comprova; limite da conclusão.
-- **Ameaça:** ator, acesso necessário e caminho plausível.
-- **Impacto, probabilidade e risco:** níveis e justificativas.
-- **Referência:** requisito aplicável de NIST IR 8259A ou ETSI EN 303 645.
-- **Mitigação:** medida concreta e forma de verificar sua eficácia.
+Os três achados usam o mesmo token fictício para mostrar superfícies distintas. Não são três credenciais diferentes nem três explorações independentes.
