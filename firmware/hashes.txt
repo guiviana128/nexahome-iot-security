@@ -1,2 +1,3 @@
-# Preencher após preservação da imagem autorizada.
-# Formato: SHA256 <hash> <nome do arquivo> | tamanho=<bytes> | origem=<origem> | data=<ISO 8601>
+# Registro da imagem educacional gerada em 2026-11-11.
+# Evidência completa com data UTC: evidence/simulation/hashes.txt
+SHA256 09883d6e34b1e03d7084c7515db37d16b0273ef99a6d1dd28bdaa2ddc0f7b00e nexahome-lab-s1-v1.0.bin | tamanho=345 bytes | origem=src/lab-assessment.mjs
