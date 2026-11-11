@@ -1,0 +1,6 @@
+# Bytes received by local TCP collector (application-layer transcript; not a packet capture)
+source=127.0.0.1:ephemeral
+destination=127.0.0.1:ephemeral
+transport=TCP; TLS=not used; application framing=newline-delimited JSON
+payload_utf8={"device_id":"LAB-S1-001","temperature_c":23.4,"token":"LAB-ONLY-KEY-7C2A","command":"telemetry"}
+
