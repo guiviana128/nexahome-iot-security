@@ -1,9 +1,9 @@
-# Evidência bruta e potencialmente sensível
+# Saídas geradas e evidências brutas
+out/
 firmware/original/
 firmware/work/
 firmware/*.bin
 firmware/*.img
-firmware/*.elf
 hardware/evidence/raw/
 network/evidence/raw/
 *.pcap
@@ -12,5 +12,4 @@ network/evidence/raw/
 *.pem
 .env
 **/secrets.*
-# Saídas locais
 tmp/
