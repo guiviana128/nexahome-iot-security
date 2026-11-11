@@ -1,0 +1,2 @@
+# Preencher após preservação da imagem autorizada.
+# Formato: SHA256 <hash> <nome do arquivo> | tamanho=<bytes> | origem=<origem> | data=<ISO 8601>
