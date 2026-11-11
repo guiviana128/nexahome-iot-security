@@ -1,0 +1,9 @@
+name=nexahome-lab-s1-v1.0.bin
+origin=generated from src/lab-assessment.mjs in this repository
+size_bytes=345
+sha256_original=09883d6e34b1e03d7084c7515db37d16b0273ef99a6d1dd28bdaa2ddc0f7b00e
+sha256_working=09883d6e34b1e03d7084c7515db37d16b0273ef99a6d1dd28bdaa2ddc0f7b00e
+analysis_date=2026-11-11T18:00:38.546Z
+original_location=out/private/original/ (excluded from Git)
+working_location=out/private/work/ (excluded from Git)
+
