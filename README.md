@@ -1,52 +1,46 @@
-# Avaliação de segurança IoT — NexaHome
+# NexaHome Lab S1 — avaliação de segurança IoT
 
-> **Estado:** estrutura e metodologia preparadas. O dispositivo, firmware e evidências de laboratório ainda não foram fornecidos. Nenhum achado foi validado.
+**Entrega educacional reproduzível.** O objeto analisado é um dispositivo **simulado em software**, construído para este trabalho. A imagem NHFW é um contêiner didático de configuração, não firmware executável de uma placa. A UART é um log simulado; a rede usa TCP em `127.0.0.1`. Essas limitações devem acompanhar qualquer entrega acadêmica.
 
-## Objetivo
-Avaliar, em ambiente educacional autorizado, a superfície de ataque de um dispositivo IoT, relacionando evidência técnica, fragilidade, ameaça, impacto, risco e mitigação. A entrega inclui documentação técnica, evidências reproduzíveis e relatório em PDF após a coleta.
-
-## Dispositivo e escopo
-- Fabricante/modelo/revisão: **a preencher**.
-- Identificador da unidade de laboratório: **a preencher** (não publicar número de série completo).
-- Firmware/versão: **a preencher**.
-- Rede de laboratório e serviços associados: **a preencher**.
-- Autorização, datas e responsáveis: **a preencher**.
-- Limites: apenas dispositivo e rede de laboratório autorizados; sem exploração de serviços externos, persistência ou alteração irreversível de hardware.
+## Objetivo e escopo
+Demonstrar preservação de evidência, análise básica de imagem, mapeamento de interfaces, observação de comunicações, demonstração controlada e relação entre achado e risco. Testes restritos ao processo local e a dados sintéticos. Não houve acesso a equipamento físico, rede externa ou serviço de produção.
 
 ## Arquitetura
-Veja [architecture/architecture.md](architecture/architecture.md). A arquitetura atual é um modelo a validar; componentes desconhecidos aparecem como “a identificar”.
+MCU virtual → imagem NHFW → log UART simulado e sensor virtual → JSON sobre TCP loopback → coletor local. Detalhes e diagrama em [architecture/architecture.md](architecture/architecture.md).
 
 ## Ferramentas
-PowerShell `Get-FileHash` e `Get-Item` para preservação; editor hexadecimal, `file`, `strings` e analisador de firmware **quando disponíveis**; multímetro ou adaptador serial conforme autorização; Wireshark/tcpdump na rede de laboratório. Registre versão e comando exato de cada ferramenta utilizada.
+Node.js 24.18.0 na execução documentada, módulos nativos `crypto`, `fs` e `net`; PowerShell para leitura dos arquivos de evidência; editor de texto. O script funciona em Node.js 18+ e não depende de pacotes externos.
 
-## Organização
-- `architecture/`: componentes e diagrama.
-- `firmware/`: inventário, hashes e notas; **não versionar imagem bruta**.
-- `hardware/`: mapa das interfaces e evidências revisadas.
-- `network/`: protocolos, fluxos e evidências revisadas.
-- `findings/`: cadeia de evidência e matriz de riscos.
-- `remediation/`: plano de hardening.
-- `report/`: fonte do relatório técnico; exportar PDF após validação.
-- `references/`: normas e caso real pesquisado.
-- `scripts/`: preservação e identificação da imagem de firmware.
+## Reprodução
+```sh
+node src/lab-assessment.mjs
+```
+A saída deve indicar `status: PASS`. O script cria uma imagem original em `out/private/original/`, uma cópia em `out/private/work/`, confere o SHA-256 e analisa apenas a cópia. Também inicia um coletor TCP local, envia uma telemetria e registra os bytes recebidos. As saídas revisadas aparecem em `out/public/`; as saídas da execução de 2026-11-11 estão em [evidence/simulation](evidence/simulation).
 
-## Estado da avaliação
-| Área | Situação | Evidência necessária |
-|---|---|---|
-| Reconhecimento | Pendente | fotos, manual ou inspeção do equipamento |
-| Firmware | Pendente | imagem autorizada, origem, tamanho e SHA-256 |
-| Interfaces físicas | Pendente | foto, medições e saída observada |
-| Comunicações | Pendente | captura da rede de laboratório e contexto |
-| Demonstração controlada | Pendente | procedimento, resultado e repetição |
-| Riscos | Pendente | achados sustentados por evidência |
+**SHA-256 da imagem:** `09883d6e34b1e03d7084c7515db37d16b0273ef99a6d1dd28bdaa2ddc0f7b00e` (345 bytes). O hash deve ser reproduzível; a data de análise muda a cada execução.
 
-## Como reproduzir no ambiente autorizado
-1. Registre modelo, revisão, limites de autorização e data.
-2. Preserve a imagem original em local privado. No PowerShell, execute `scripts/preserve-firmware.ps1 -Source <caminho> -Origin <origem> -OutputDir <pasta-privada>`. Confira `hashes.txt` e trabalhe somente na cópia.
-3. Preencha o inventário, fotografe as interfaces e guarde os originais em armazenamento privado.
-4. Capture apenas o tráfego do dispositivo na rede de laboratório. Registre horários, IPs anonimizados, protocolo, autenticação e proteção do canal.
-5. Escolha uma condição observada, faça uma demonstração controlada e registre passos, saída e limitação.
-6. Preencha `findings/findings.md` com referências a evidências específicas. Atualize `report/relatorio-tecnico.md` e exporte o PDF.
-7. Antes de publicar, retire credenciais, tokens, senhas, chaves, dados pessoais, endereços públicos e dumps não revisados.
+## Resultados
+- **Firmware:** formato NHFW; cabeçalho de 8 bytes e manifesto JSON de 337 bytes, sem partição ou sistema de arquivos. Token **fictício** legível no campo `token`.
+- **Hardware:** não há placa; apenas log UART simulado. A inspeção de UART/JTAG/SPI/I²C físicos é **não aplicável**.
+- **Protocolo:** TCP local com JSON por linha, sem TLS. O coletor recebeu identificador, temperatura e token fictício.
+- **Demonstração:** seis verificações passaram; o mesmo token apareceu na imagem, no log e na mensagem.
+- **Achados:** F01 token na imagem, F02 token no log, F03 token no payload sem proteção de canal. Os três riscos foram classificados como **médios no laboratório**; ver [findings/findings.md](findings/findings.md).
 
-**Regra de evidência:** “não observado” não equivale a “inexistente”. A presença de UART, JTAG ou de um protocolo não constitui, por si, vulnerabilidade.
+## Entrega
+| Parte | Arquivo |
+|---|---|
+| Relatório técnico | [report/relatorio-tecnico.md](report/relatorio-tecnico.md) e PDF em `report/relatorio-tecnico.pdf` |
+| Preservação e firmware | [firmware/analysis-notes.md](firmware/analysis-notes.md), `evidence/simulation/hashes.txt` |
+| Interfaces | [hardware/interface-map.md](hardware/interface-map.md) |
+| Comunicações | [network/protocol-analysis.md](network/protocol-analysis.md) |
+| Demonstração | [findings/controlled-demo.md](findings/controlled-demo.md) |
+| Riscos | [findings/findings.md](findings/findings.md) |
+| Hardening | [remediation/hardening-plan.md](remediation/hardening-plan.md) |
+| Caso real e normas | [references/sources.md](references/sources.md) |
+
+## Recomendações e publicação
+Para uma versão comercial: credenciais individuais protegidas, logs sem segredos, autenticação de pares, canal criptografado, validação de atualização e restrição de debug. Estas são propostas de projeto, não correções testadas em hardware.
+
+O token `LAB-ONLY-KEY-7C2A` é deliberadamente sintético e não autentica nenhum sistema real. Não envie para este repositório público firmware real, credenciais, tokens reais, PCAPs brutos, números de série ou dados pessoais.
+
+**Limite de avaliação:** se o professor exigir um dispositivo físico ou imagem executável real, este estudo simulado não satisfaz esse requisito; será necessário substituir o objeto e repetir os testes.
