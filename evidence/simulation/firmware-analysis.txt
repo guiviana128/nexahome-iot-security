@@ -1,0 +1,11 @@
+# Firmware analysis generated from preserved working copy
+format=NHFW custom educational container
+header_offset=0; magic=NHFW
+manifest_length_offset=4; manifest_offset=8; manifest_bytes=337
+filesystem=none; partitions=none; executable code=none
+manifest_device=NexaHome Lab S1
+manifest_transport=TCP loopback, newline-delimited JSON
+manifest_debug_interface=UART simulated as a boot log
+synthetic_token_at_json_field=token; value=LAB-ONLY-KEY-7C2A
+assessment=token is directly readable in image; this is a deliberate lab weakness
+
