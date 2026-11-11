@@ -1,0 +1,16 @@
+# Evidência bruta e potencialmente sensível
+firmware/original/
+firmware/work/
+firmware/*.bin
+firmware/*.img
+firmware/*.elf
+hardware/evidence/raw/
+network/evidence/raw/
+*.pcap
+*.pcapng
+*.key
+*.pem
+.env
+**/secrets.*
+# Saídas locais
+tmp/
