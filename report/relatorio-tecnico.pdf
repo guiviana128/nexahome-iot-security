@@ -1,0 +1,128 @@
+%PDF-1.4
+%âãÏÓ
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [6 0 R 8 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Length 4635 >>
+stream
+BT /F2 17 Tf 1 0 0 1 48 780 Tm (Relatório técnico - NexaHome Lab S1) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 748 Tm (Data: 11 de novembro de 2026. Objeto: dispositivo IoT educacional simulado em Node.js,) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 735 Tm (versão 1.0. Ambiente: um único computador, rede loopback 127.0.0.1\). Natureza da evidência:) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 722 Tm (execução local reproduzível; não houve análise de equipamento físico.) Tj ET
+BT /F2 12 Tf 1 0 0 1 48 698 Tm (1. Dispositivo, componentes e arquitetura) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 675 Tm (O NexaHome Lab S1 declara MCU virtual de 32 bits, flash virtual de 512 KiB e sensor de) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 662 Tm (temperatura virtual. A imagem NHFW contém um manifesto JSON; a saída UART é simulada por) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 649 Tm (log; o firmware gera telemetria JSON transmitida por TCP a um coletor local. Não existe) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 636 Tm (placa, fonte, barramento elétrico ou serviço externo. O diagrama validado está em) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 623 Tm (architecture/architecture.md.) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 604 Tm (MCU/flash/sensor virtuais -> imagem NHFW -> log UART simulado) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 589 Tm (?-> TCP loopback -> coletor local) Tj ET
+BT /F2 12 Tf 1 0 0 1 48 565 Tm (2. Superfície de ataque e metodologia) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 542 Tm (As superfícies efetivamente testadas foram: arquivo de imagem, log UART simulado e mensagem) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 529 Tm (TCP local. O script criou uma imagem original, copiou-a, comparou SHA-256, analisou a cópia,) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 516 Tm (executou cliente/coletor TCP e verificou seis condições. O acesso ao arquivo/log e ao host) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 503 Tm (local é pré-requisito para as exposições observadas. Ferramentas: Node.js 24.18.0 e módulos) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 490 Tm (nativos crypto, fs, net. Procedimento exato em findings/controlled-demo.md.) Tj ET
+BT /F2 12 Tf 1 0 0 1 48 466 Tm (3. Preservação e análise do firmware) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 443 Tm (Origem: src/lab-assessment.mjs, criado para o laboratório. Nome: nexahome-lab-s1-v1.0.bin;) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 430 Tm (tamanho: 345 bytes; SHA-256 original/cópia:) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 417 Tm (09883d6e34b1e03d7084c7515db37d16b0273ef99a6d1dd28bdaa2ddc0f7b00e. A imagem original ficou em) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 404 Tm (out/private/original/, a cópia em out/private/work/, ambas excluídas do Git. O cabeçalho) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 391 Tm (NHFW inicia no offset 0, o comprimento little-endian no offset 4, e o manifesto JSON de 337) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 378 Tm (bytes no offset 8. Não há partições, sistema de arquivos, bibliotecas ou código de MCU. O) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 365 Tm (campo token contém LAB-ONLY-KEY-7C2A, credencial fictícia. Evidências:) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 352 Tm (evidence/simulation/hashes.txt e firmware-analysis.txt.) Tj ET
+BT /F2 12 Tf 1 0 0 1 48 328 Tm (4. Interfaces físicas) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 305 Tm (Não há interfaces físicas no simulador. O log UART simulado mostrou DEBUG enrollment) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 292 Tm (token=LAB-ONLY-KEY-7C2A na inicialização \(evidence/simulation/uart-observation.txt\). Isso) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 279 Tm (comprova a exposição no log simulado. A existência e proteção de UART/JTAG/SPI/I²C em) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 266 Tm (equipamento comercial não foram avaliadas. Se uma versão real emitisse tal informação por) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 253 Tm (UART acessível, o risco dependeria de acesso físico, privilégio do token e controles da) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 240 Tm (interface.) Tj ET
+BT /F2 12 Tf 1 0 0 1 48 216 Tm (5. Comunicações) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 193 Tm (O cliente enviou JSON por TCP a 127.0.0.1, porta efêmera. O coletor recebeu exatamente os) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 180 Tm (bytes enviados, incluindo device_id, temperatura e token fictício) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 167 Tm (\(evidence/simulation/network-observation.txt\). TLS e autenticação do coletor não estão) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 154 Tm (implementados. A evidência é transcrição de aplicação, não PCAP nem interceptação por) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 141 Tm (terceiros. Identificar TCP/JSON descreve formato; julgar segurança requer examinar) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 128 Tm (autenticação, proteção do canal, alcance e sensibilidade dos campos.) Tj ET
+BT /F2 12 Tf 1 0 0 1 48 104 Tm (6. Demonstração controlada) Tj ET
+BT /F1 8 Tf 1 0 0 1 48 38 Tm (NexaHome Lab S1 | Estudo simulado | Pagina 1 de 2) Tj ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 4186 >>
+stream
+BT /F1 9 Tf 1 0 0 1 48 785 Tm (Executar node src/lab-assessment.mjs; verificar status: PASS, igualdade de hashes e presença) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 772 Tm (do token na imagem, log e payload. As seis verificações de evidence/simulation/checks.json) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 759 Tm (passaram. A demonstração é local, reproduzível e não acessou serviços externos.) Tj ET
+BT /F2 12 Tf 1 0 0 1 48 735 Tm (7. Achados, riscos e mitigação) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 712 Tm (Impacto e probabilidade referem-se ao laboratório. Impacto baixo porque o token não concede) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 699 Tm (acesso real; probabilidade alta porque as condições foram reproduzidas de modo) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 686 Tm (determinístico; pela matriz adotada, risco médio.) Tj ET
+BT /F1 8 Tf 1 0 0 1 48 667 Tm (ID | Evidência | Fragilidade / ameaça contextual | Impacto | Prob. | Risco | Mitigação) Tj ET
+BT /F1 8 Tf 1 0 0 1 48 653 Tm (F01 | firmware-analysis.txt, campo token | Quem obtiver a imagem lê o token | Baixo | Alta | Médio |) Tj ET
+BT /F1 8 Tf 1 0 0 1 48 641 Tm (Credencial individual e armazenamento protegido) Tj ET
+BT /F1 8 Tf 1 0 0 1 48 627 Tm (F02 | uart-observation.txt, linha 3 | Quem lê o log vê o token | Baixo | Alta | Médio | Remover segredos) Tj ET
+BT /F1 8 Tf 1 0 0 1 48 615 Tm (de logs de produção) Tj ET
+BT /F1 8 Tf 1 0 0 1 48 601 Tm (F03 | network-observation.txt, checks.json | Payload em texto claro; exposição se o fluxo for acessível) Tj ET
+BT /F1 8 Tf 1 0 0 1 48 589 Tm (| Baixo | Alta | Médio | Canal protegido e autenticação de pares) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 571 Tm (F01 e F02 se relacionam à proteção de dados e controle de interfaces da NIST IR 8259A) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 558 Tm (\(https://csrc.nist.gov/pubs/ir/8259/a/final\). F03 se relaciona à proteção de parâmetros) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 545 Tm (críticos em trânsito da ETSI EN 303 645, seção 5.5) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 532 Tm (\(https://www.etsi.org/deliver/etsi_en/303600_303699/303645/03.01.03_60/en_303645v030103p.pdf) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 519 Tm (\).) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 506 Tm (A lista de "referências indicadas" no enunciado não foi fornecida; confirmar se estas são) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 493 Tm (aceitas.) Tj ET
+BT /F2 12 Tf 1 0 0 1 48 469 Tm (8. Hardening comercial) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 446 Tm (Priorizar: credenciais únicas por unidade, não registrar segredos, TLS com autenticação de) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 433 Tm (pares, mínimo privilégio, debug controlado, atualização assinada, proteção contra rollback e) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 420 Tm (recuperação de falha. Secure Boot e proteção de armazenamento dependem do hardware. O plano) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 407 Tm (completo e critérios de verificação estão em remediation/hardening-plan.md.) Tj ET
+BT /F2 12 Tf 1 0 0 1 48 383 Tm (9. Exemplo real pesquisado) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 360 Tm (O relatório NSTAC hospedado pela CISA) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 347 Tm (\(https://www.cisa.gov/sites/default/files/publications/NSTAC%20Report%20to%20the%20President) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 334 Tm (%20on%20ICR%20FINAL%20%2810-12-17%29%20%281%29-%20508%20compliant_0.pdf\)) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 321 Tm (descreve o botnet Mirai explorando dispositivos IoT com configurações padrão e credenciais) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 308 Tm (embutidas, e o ataque DDoS à Dyn em 2016. A relação com F01 é analogia de projeto, não) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 295 Tm (afirmação de que o simulador esteja vulnerável ao Mirai.) Tj ET
+BT /F2 12 Tf 1 0 0 1 48 271 Tm (10. Limitações) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 248 Tm (Este estudo não prova segurança ou insegurança de um dispositivo comercial. A "firmware" não) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 235 Tm (é executável em MCU; não houve análise elétrica, PCAP, interceptação de rede, serviço em) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 222 Tm (nuvem ou testes de atualização. Se a disciplina exigir hardware físico ou firmware real,) Tj ET
+BT /F1 9 Tf 1 0 0 1 48 209 Tm (este caso precisa ser substituído ou complementado.) Tj ET
+BT /F1 8 Tf 1 0 0 1 48 38 Tm (NexaHome Lab S1 | Estudo simulado | Pagina 2 de 2) Tj ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 7 0 R >>
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000127 00000 n 
+0000000224 00000 n 
+0000000326 00000 n 
+0000005012 00000 n 
+0000005148 00000 n 
+0000009385 00000 n 
+trailer
+<< /Size 9 /Root 1 0 R >>
+startxref
+9521
+%%EOF
